@@ -1,0 +1,26 @@
+{
+    "type": "object",
+    "properties": {
+        "requested_amount": {
+            "type": "number"
+        },
+        "income_source": {
+            "type": "string"
+        },
+        "payment_term": {
+            "type": "number"
+        },
+        "credit_score": {
+            "type": "number"
+        },
+        "gender": {
+            "type": "string"
+        },
+        "age": {
+            "type": "number"
+        },
+        "recent_year_income": {
+            "type": "number"
+        }
+    }
+}

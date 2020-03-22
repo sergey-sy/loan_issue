@@ -1,30 +1,35 @@
+from loan_calculator.loan_calculator import Client, ClientDataValidator
+
+
 INPUT_DATA = {
-    'age': '30',
+    'age': '58',
     'gender': 'M',
-    'income_source': 'employee',
-    'recent_year_income': '2000_000',
-    'credit_score': '0',
-    'requested_amount': '500_000',
-    'payment_term': '10',
+    'income_source': 'businessman',
+    'recent_year_income': '2',
+    'credit_score': '-2',
+    'requested_amount': '1',
+    'payment_term': '2',
     'credit_purpose': 'car'
 }
 
 
-def get_client_data():
-    # get data from keyboard
-    return INPUT_DATA
+def return_credit_decision(raw_client_data=INPUT_DATA):
+    """
+    Take client data and return credit decision.
+    Use this function such as API for loan calculator.
+    Input data should be such as INPUT_DATA. Inside the loan_calculator
+    input data converted to format like loan_calculator/client_config_schema.json.
+    Function return # dict(is_credit_available=True or False, year_payment=float in millions)
+    """
 
-
-def return_credit_decision(input_data):
-    credit_decision = dict(is_credit_available=True, credit_amount=1_000)
-    return credit_decision
+    client_data = ClientDataValidator.validate(raw_client_data)
+    client = Client(client_data)
+    return client.make_credit_decision()
 
 
 if __name__ == '__main__':
-    # input_data = get_client_data()
-    input_data = INPUT_DATA
-    credit_decision = return_credit_decision(input_data)
+    credit_decision = return_credit_decision()
     if credit_decision['is_credit_available']:
-        print(f"Pre-certified for a loan of up to ${credit_decision['credit_amount']}.")
+        print(f"Pre-certified for a loan of up to MLN {credit_decision['year_payment']}.")
     else:
         print("Loan has not approved")
