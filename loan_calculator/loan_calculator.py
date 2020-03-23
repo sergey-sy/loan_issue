@@ -83,18 +83,39 @@ class ClientDataValidator(ClientDataValidatorException):
             client_data['age'] = int(client_data['age'])
             client_data['gender'] = str(client_data['gender']).upper()
             client_data['income_source'] = str(client_data['income_source']).lower()
-            client_data['recent_year_income'] = float(client_data['recent_year_income'])
+            client_data['recent_year_income'] = int(client_data['recent_year_income'])
             client_data['credit_score'] = int(client_data['credit_score'])
             client_data['requested_amount'] = float(client_data['requested_amount'])
             client_data['payment_term'] = int(client_data['payment_term'])
             client_data['credit_purpose'] = str(client_data['credit_purpose']).lower()
         except ValueError:
-            print("""
-            ValueError, failed during client data validation.
-            Some data impossible to convert.
-            The transmitted data must match with loan_calculator/client_config_schema.json""")
-            raise ClientDataValidatorException('Failed in ClientDataValidator.validate')
-        else:
+            raise ClientDataValidatorException("""
+                Failed in ClientDataValidator.validate.
+                ValueError, failed during client data validation.
+                Some data impossible to convert.
+                The transmitted data must match with loan_calculator/client_config_schema.json""")
+        else:  # TODO refactor to cycle or function
+            if not 0 <= (foo := client_data['age']) <= 150:
+                raise ClientDataValidatorException(f'Client age is "{foo}", but should be in range 0 <= age <= 150')
+            if (foo := client_data['gender']) not in ['F', 'M']:
+                raise ClientDataValidatorException(f'Client gender value is "{foo}", but should be F or M')
+            if (foo := client_data['income_source']) not in ['passive', 'employee',	'businessman', 'unemployed']:
+                raise ClientDataValidatorException(f"""Client income_source value is "{foo}",
+                    but should be passive or employee or businessman or unemployed""")
+            if not 0 <= (foo := client_data['recent_year_income']) <= 1000:
+                raise ClientDataValidatorException(f"""Client recent_year_income is "{foo}",
+                    but should be in range 0 <= age <= 1000""")
+            if not -2 <= (foo := client_data['credit_score']) <= 2:
+                raise ClientDataValidatorException(f'Client age is "{foo}", but should be in range 0 <= age <= 150')
+            if not 0.1 <= (foo := client_data['requested_amount']) <= 10:
+                raise ClientDataValidatorException(f"""Client requested_amount is "{foo}",
+                    but should be in range 0.1 <= age <= 10""")
+            if not 1 <= (foo := client_data['payment_term']) <= 20:
+                raise ClientDataValidatorException(f"""Client payment_term is "{foo}",
+                    but should be in range 1 <= age <= 20""")
+            if (foo := client_data['credit_purpose']) not in ['mortgage', 'business', 'car',	'consumer']:
+                raise ClientDataValidatorException(f"""Client credit_purpose value is "{foo}", but should be
+                    mortgage or business or car or consumer""")
             return client_data
 
 

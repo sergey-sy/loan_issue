@@ -2,11 +2,11 @@ from loan_calculator.loan_calculator import Client, ClientDataValidator
 
 
 INPUT_DATA = {
-    'age': '58',
-    'gender': 'M',
+    'age': '18',
+    'gender': 'F',
     'income_source': 'businessman',
     'recent_year_income': '2',
-    'credit_score': '-2',
+    'credit_score': '2',
     'requested_amount': '1',
     'payment_term': '2',
     'credit_purpose': 'car'
